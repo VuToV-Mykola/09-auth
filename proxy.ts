@@ -23,10 +23,10 @@ async function readCookieValue(req: NextRequest, name: string) {
 export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  let accessToken = await readCookieValue(req, "accessToken");
-  let refreshToken = await readCookieValue(req, "refreshToken");
+  const accessToken = await readCookieValue(req, "accessToken");
+  const refreshToken = await readCookieValue(req, "refreshToken");
 
-  let isAuthenticated = Boolean(accessToken || refreshToken);
+  let isAuthenticated = Boolean(accessToken);
   const response = NextResponse.next();
 
   if (!accessToken && refreshToken) {
@@ -35,7 +35,6 @@ export async function proxy(req: NextRequest) {
     for (const cookieStr of refreshed.setCookies) response.headers.append("set-cookie", cookieStr);
 
     isAuthenticated = refreshed.success;
-    if (refreshed.success) accessToken = "refreshed";
   }
 
   if (!isAuthenticated && isPrivatePath(pathname)) {
