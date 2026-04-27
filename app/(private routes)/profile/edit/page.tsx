@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { getMe, updateMe } from "@/lib/api/clientApi";
 import { useAuthStore } from "@/lib/store/authStore";
 import css from "./EditProfilePage.module.css";
@@ -50,11 +51,22 @@ export default function EditProfilePage() {
   return (
     <main className={css.mainContent}>
       <form className={css.profileCard} onSubmit={handleSubmit}>
-        <h1 className={css.formTitle}>Edit profile</h1>
+        <h1 className={css.formTitle}>Edit Profile</h1>
+
+        {user ? (
+          <Image
+            src={user.avatar || "/file.svg"}
+            alt="User Avatar"
+            width={120}
+            height={120}
+            className={css.avatar}
+            priority
+          />
+        ) : null}
 
         <div className={css.profileInfo}>
           <div className={css.usernameWrapper}>
-            <label htmlFor="username">Username</label>
+            <label htmlFor="username">Username:</label>
             <input
               id="username"
               name="username"
@@ -66,6 +78,8 @@ export default function EditProfilePage() {
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
+
+          <p>Email: {user?.email ?? "—"}</p>
 
           {error ? <p>{error}</p> : null}
 

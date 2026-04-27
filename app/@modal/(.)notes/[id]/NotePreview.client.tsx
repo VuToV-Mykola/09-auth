@@ -12,6 +12,7 @@ type Props = {
 
 export default function NotePreviewClient({ noteId }: Props) {
   const router = useRouter();
+  const close = () => router.back();
 
   const {
     data: note,
@@ -29,7 +30,7 @@ export default function NotePreviewClient({ noteId }: Props) {
   const createdDate = new Date(note.createdAt).toLocaleDateString();
 
   return (
-    <Modal onClose={() => router.back()}>
+    <Modal onClose={close}>
       <div className={css.container}>
         <div className={css.item}>
           <div className={css.header}>
@@ -38,6 +39,9 @@ export default function NotePreviewClient({ noteId }: Props) {
           <p className={css.tag}>{note.tag}</p>
           <p className={css.content}>{note.content}</p>
           <p className={css.date}>{createdDate}</p>
+          <button className={css.backBtn} type="button" onClick={close}>
+            Close
+          </button>
         </div>
       </div>
     </Modal>

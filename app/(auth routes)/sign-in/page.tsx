@@ -24,7 +24,7 @@ export default function SignInPage() {
       await login({ email, password });
       const user = await getMe();
       setUser(user);
-      router.push("/notes/filter/all");
+      router.push("/profile");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
     } finally {
