@@ -1,5 +1,6 @@
 import css from "./Header.module.css";
 import Link from "next/link";
+import AuthNavigation from "@/components/AuthNavigation/AuthNavigation";
 
 const Header = () => {
   return (
@@ -14,11 +15,7 @@ const Header = () => {
               Home
             </Link>
           </li>
-          <li className={css.navigationItem}>
-            <Link href="/notes/filter/all" className={css.navigationLink}>
-              Notes
-            </Link>
-          </li>
+          <AuthNavigation />
         </ul>
       </nav>
     </header>
