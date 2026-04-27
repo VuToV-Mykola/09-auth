@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getMe, register } from "@/lib/api/clientApi";
+import { register } from "@/lib/api/clientApi";
 import { useAuthStore } from "@/lib/store/authStore";
 import css from "./SignUpPage.module.css";
 
@@ -10,7 +10,6 @@ export default function SignUpPage() {
   const router = useRouter();
   const setUser = useAuthStore((state) => state.setUser);
 
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -22,10 +21,9 @@ export default function SignUpPage() {
     setIsSubmitting(true);
 
     try {
-      await register({ username, email, password });
-      const user = await getMe();
+      const user = await register({ email, password });
       setUser(user);
-      router.push("/notes/filter/all");
+      router.push("/profile");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Sign up failed");
     } finally {
@@ -39,22 +37,10 @@ export default function SignUpPage() {
         <h1 className={css.formTitle}>Sign up</h1>
 
         <label className={css.formGroup}>
-          Username
-          <input
-            className={css.input}
-            name="username"
-            type="text"
-            autoComplete="username"
-            required
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </label>
-
-        <label className={css.formGroup}>
           Email
           <input
             className={css.input}
+            id="email"
             name="email"
             type="email"
             autoComplete="email"
@@ -68,6 +54,7 @@ export default function SignUpPage() {
           Password
           <input
             className={css.input}
+            id="password"
             name="password"
             type="password"
             autoComplete="new-password"
@@ -79,7 +66,7 @@ export default function SignUpPage() {
 
         <div className={css.actions}>
           <button className={css.submitButton} type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Signing up..." : "Sign up"}
+            {isSubmitting ? "Registering..." : "Register"}
           </button>
         </div>
 
